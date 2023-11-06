@@ -12,3 +12,4 @@
 **/*.tfstate.*
 **/*.log
 **/*plan*
+**/google-project.tf
