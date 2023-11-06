@@ -7,7 +7,7 @@ data "google_billing_account" "default" {
 }
 
 resource "google_project" "default" {
-  provider = google-beta
+  provider        = google-beta
 
   name            = random_id.id.dec
   project_id      = "${var.PROJECT_NAME}-${tonumber(random_id.id.dec)}"
