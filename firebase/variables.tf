@@ -6,3 +6,7 @@ variable "SECONDARY_STORAGE_BUCKET_ID" {
 variable "GOOGLE_REGION" {
   type = string
 }
+
+variable "PROJECT_ID" {
+  type = string
+}
