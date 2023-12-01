@@ -13,7 +13,7 @@ resource "google_container_cluster" "jupyterhub" {
     cluster_secondary_range_name  = "pod-ranges"
     services_secondary_range_name = google_compute_subnetwork.jupyterhub_gke.secondary_ip_range.0.range_name
   }
-  
+
   deletion_protection = false
 }
 
