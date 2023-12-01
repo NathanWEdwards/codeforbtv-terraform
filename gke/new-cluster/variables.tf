@@ -1,6 +1,6 @@
 variable "GKE_NUM_NODES" {
   type    = number
-  default = 2
+  default = 1
 }
 
 variable "JUPYTERHUB_SERVICE_ACCOUNT_EMAIL" {
