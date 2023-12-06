@@ -14,6 +14,12 @@ resource "google_container_cluster" "jupyterhub" {
     services_secondary_range_name = google_compute_subnetwork.jupyterhub_gke.secondary_ip_range.0.range_name
   }
 
+  addons_config {
+    http_load_balancing {
+      disabled = true
+    }
+  }
+
   deletion_protection = false
 }
 

@@ -1,0 +1,64 @@
+cull:
+  enabled: true
+  users: true
+  adminUsers: true
+  removeNamedServers: true
+  timeout: 360000
+  every: 300
+  maxAge: 0
+hub:
+  service:
+    type: NodePort
+  baseUrl: /
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/proxy-body-size: 600m
+    nginx.org/client-max-body-size: "10m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "1800"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1800"
+    nginx.ingress.kubternetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/websocket-services: proxy-public
+    nginx.org/websocket-services: proxy-public
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod-issuer
+proxy:
+  service:
+    type: NodePort
+singleuser:
+  extraEnv:
+    JUPYTER_RUNTIME_DIR: /tmp/.jupyter-runtime
+  extraFiles:
+    ipython_kernel_config.json:
+      mountPath: /usr/local/etc/ipython/ipython_kernel_config.json
+      data:
+        HistoryManager:
+          enabled: false
+    jupyter_notebook_config.json:
+      mountPath: /etc/jupyter/jupyter_notebook_config.json
+      data:
+        MappingKernelManager:
+          cull_idle_timeout: 360000
+          cull_interval: 300
+          cull_connected: false
+          cull_busy: false
+  image:
+    name: edwanath/typescript-notebook
+    tag: "2023-12-05"
+  profileList:
+    - display_name: "Baby Equipment Exchange"
+      description: "The Baby Equipment Exchange project. The Exchange redistributes the equipment back to families with economic need through a network of social service and mutual aid organizations."
+      lifecycleHooks:
+        postStart:
+          exec:
+            command:
+               [ "git",
+                 "clone",
+                 "https://github.com/codeforbtv/baby-equipment-exchange main baby-equipment-exchange"
+               ]
+  storage:
+    dynamic:
+      storageClass: jupyterhub-user-storage-class
