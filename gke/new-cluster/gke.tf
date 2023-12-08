@@ -20,6 +20,10 @@ resource "google_container_cluster" "jupyterhub" {
     }
   }
 
+  provisioner "local-exec" {
+    command = "gcloud container clusters get-credentials ${self.name} --location ${self.location}"
+  }
+
   deletion_protection = false
 }
 
