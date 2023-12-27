@@ -14,3 +14,15 @@ data "kustomization_overlay" "primary" {
     load_restrictor = "none"
   }
 }
+
+data "kustomization_overlay" "ingress_nginx" {
+
+  resources = [
+    "manifests/overlays/${terraform.workspace}/ingress/"
+  ]
+
+  kustomize_options {
+    load_restrictor = "none"
+  }
+}
+
