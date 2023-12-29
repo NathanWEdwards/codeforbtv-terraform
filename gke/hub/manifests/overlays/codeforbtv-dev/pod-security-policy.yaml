@@ -1,0 +1,13 @@
+apiVersion: policy/v1beta
+kind: PodSecurityPolicy
+metadata:
+  name: pod-security-policy
+spec:
+  hostIPC: false
+  hostNetwork: false
+  hostPID: false
+  privileged: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  requiredDropCapabilities:
+  - NET_RAW

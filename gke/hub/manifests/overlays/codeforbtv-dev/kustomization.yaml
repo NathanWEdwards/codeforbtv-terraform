@@ -6,5 +6,6 @@ resources:
 - namespace.yaml
 - nfs-persistent-volume.yaml
 - nfs-persistent-volume-claim.yaml
+- pod-security-policy.yaml
 - service-account.yaml
 - user-storage-class.yaml
