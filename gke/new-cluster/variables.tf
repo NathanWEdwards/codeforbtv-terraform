@@ -3,12 +3,12 @@ variable "GKE_NUM_NODES" {
   default = 1
 }
 
-variable "JUPYTERHUB_SERVICE_ACCOUNT_EMAIL" {
+variable "DEFAULT_SERVICE_ACCOUNT_EMAIL" {
   type      = string
   sensitive = true
 }
 
-variable "JUPYTERHUB_VPC_NETWORK_NAME" {
+variable "DEFAULT_VPC_NETWORK_NAME" {
   type    = string
   default = "cluster"
 }

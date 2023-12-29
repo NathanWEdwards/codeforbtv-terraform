@@ -1,17 +1,17 @@
-data "google_service_account" "jupyterhub_service_account" {
+data "google_service_account" "default_service_account" {
   project    = var.PROJECT_ID
   account_id = var.SERVICE_ACCOUNT_ID
 }
 
-data "google_service_account_access_token" "jupyterhub_kubernetes" {
-  target_service_account = var.JUPYTERHUB_SERVICE_ACCOUNT_EMAIL
+data "google_service_account_access_token" "default_kubernetes" {
+  target_service_account = var.DEFAULT_SERVICE_ACCOUNT_EMAIL
   scopes                 = ["userinfo-email", "cloud-platform"]
   lifetime               = "1800s"
 }
 
-data "google_compute_network" "jupyterhub_vpc_network" {
+data "google_compute_network" "default_vpc_network" {
   project = var.PROJECT_ID
-  name    = var.JUPYTERHUB_VPC_NETWORK_NAME
+  name    = var.DEFAULT_VPC_NETWORK_NAME
 }
 
 data "google_container_engine_versions" "gke_version" {

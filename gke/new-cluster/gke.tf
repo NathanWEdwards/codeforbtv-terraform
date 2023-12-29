@@ -1,4 +1,4 @@
-resource "google_container_cluster" "jupyterhub" {
+resource "google_container_cluster" "default" {
   project  = var.PROJECT_ID
   name     = "${var.PROJECT_ID}-gke"
   location = var.LOCATION
@@ -6,12 +6,12 @@ resource "google_container_cluster" "jupyterhub" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
-  network    = data.google_compute_network.jupyterhub_vpc_network.self_link
-  subnetwork = google_compute_subnetwork.jupyterhub_gke.self_link
+  network    = data.google_compute_network.default_vpc_network.self_link
+  subnetwork = google_compute_subnetwork.default_gke.self_link
 
   ip_allocation_policy {
     cluster_secondary_range_name  = "pod-ranges"
-    services_secondary_range_name = google_compute_subnetwork.jupyterhub_gke.secondary_ip_range.0.range_name
+    services_secondary_range_name = google_compute_subnetwork.default_gke.secondary_ip_range.0.range_name
   }
 
   addons_config {
@@ -27,17 +27,17 @@ resource "google_container_cluster" "jupyterhub" {
   deletion_protection = false
 }
 
-resource "google_container_node_pool" "jupyterhub_nodes" {
+resource "google_container_node_pool" "default_nodes" {
   project  = var.PROJECT_ID
-  name     = google_container_cluster.jupyterhub.name
+  name     = google_container_cluster.default.name
   location = var.LOCATION
-  cluster  = google_container_cluster.jupyterhub.name
+  cluster  = google_container_cluster.default.name
 
   version    = data.google_container_engine_versions.gke_version.release_channel_latest_version["STABLE"]
   node_count = var.GKE_NUM_NODES
 
   node_config {
-    service_account = data.google_service_account.jupyterhub_service_account.email
+    service_account = data.google_service_account.default_service_account.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform",
       "https://www.googleapis.com/auth/logging.write",
