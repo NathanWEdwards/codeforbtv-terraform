@@ -3,6 +3,18 @@ resource "google_container_cluster" "default" {
   name     = "${var.PROJECT_ID}-gke"
   location = var.LOCATION
 
+  enable_shielded_nodes = true
+
+  cluster_autoscaling {
+    auto_provisioning_defaults {
+
+      shielded_instance_config {
+        enable_integrity_monitoring = true
+        enable_secure_boot          = true
+      }
+    }
+  }
+
   remove_default_node_pool = true
   initial_node_count       = 1
 
