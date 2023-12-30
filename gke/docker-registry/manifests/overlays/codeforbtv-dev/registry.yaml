@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: registry-resource-quota
+  namespace: registry
+spec:
+  hard:
+    pods: "1"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: registry-daemon-set
+  namespace: registry
+  labels:
+    app: registry
+spec:
+  hostname: docker
+  selector:
+    matchLabels:
+      app: registry
+  template:
+    metadata:
+      labels:
+        app: registry
+    spec:
+      containers:
+      - name: registry
+        image: registry:2
+        securityContext:
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - name: containerd-config
+          mountPath: /etc/containerd
+          readOnly: true
+        - name: registry-certificates
+          mountPath: /etc/docker/certs.d/docker.registry.svc.cluster.local
+          readOnly: true
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      hostname: docker
+      volumes:
+      - name: containerd-config
+        configMap:
+          name: containerd-config
+          defaultMode: 0400
+      - name: registry-certificates
+        secret:
+          secretName: registry-certificates
+          defaultMode: 420
